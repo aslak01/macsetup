@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 echo "Mac Setup"
 
 # from https://raw.githubusercontent.com/jlom/macsetup/master/setup.sh
@@ -11,20 +11,20 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 echo "SET COMPUTER NAME"
 echo "It's a good idea not to have your actual name or identifying information"
 echo "as part of the computer name."
-read COMPUTER_NAME
+read -r -r COMPUTER_NAME
 
 echo "========================================================================"
 echo "SET YOUR LOCK SCREEN, GITHUB and SSH INFORMATION"
 echo "Your name:"
-read YOUR_NAME
+read -r YOUR_NAME
 echo "Your email:"
-read YOUR_EMAIL
+read -r YOUR_EMAIL
 echo "Your phone number:"
-read YOUR_PHONE
+read -r YOUR_PHONE
 echo "========================================================================"
 echo "SIGN IN TO THE MAC APP STORE"
 open /Applications/App\ Store.app/
-read -p "Sign in to the App Store. Press any key when you're done, to continue." -n1 -s
+read -r -p "Sign in to the App Store. Press any key when you're done, to continue." -n1 -s
 echo "========================================================================"
 echo "Installing xcode tools and brew"
 echo "========================================================================"
@@ -103,7 +103,7 @@ echo "========================================================================"
 echo "Setting Firmware password"
 echo "========================================================================"
 # Prompt for FW password when booting from a different volume
-read -p "Set firmware password (reccomended)? [y/n] " -n 1 -r
+read -r -p "Set firmware password (reccomended)? [y/n] " -n 1 -r
 echo    # (optional) move to a new line
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
@@ -362,5 +362,5 @@ echo "================================================================="
 echo "Save this to 1Password, and keep it for when the computer needs"
 echo "to go to the hospital."
 echo ""
-read -p "Press any key to finish and reboot… " -n1 -s
+read -pr "Press any key to finish and reboot… " -n1 -s
 sudo shutdown -r now
