@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 color_reset=$(tput sgr0)
 color_red=$(tput setaf 1)
