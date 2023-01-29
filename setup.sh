@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 source "scripts/_utils.sh"
 
@@ -18,6 +18,8 @@ SEP="========================================================================"
 
 printf "%s" "$SEP"
 printf "\n\n\n"
+
+caffeinate -dimus
 
 # from https://raw.githubusercontent.com/jlom/macsetup/master/setup.sh
 
@@ -40,41 +42,35 @@ read -r YOUR_PHONE
 
 echo "========================================================================"
 
-echo "Are your details correct?"
+echo "Verify details"
 echo 
 echo "Computer name: $COMPUTER_NAME"
 echo "Name: $YOUR_NAME"
 echo "Email: $YOUR_EMAIL"
 echo "Phone: $YOUR_PHONE"
 
-get_consent "Confirm or deny"
+get_consent "Are your details correct?"
 if ! has_consent; then
-    echo "SET DETAILS AGAIN (PAY MORE ATTENTION THIS TIME)"
-    echo
-    printf "%s" "$SEP"
-    echo
-    echo "Computer name:"
-    read -r COMPUTER_NAME
-    echo "Your name:"
-    read -r YOUR_NAME
-    echo "Your email:"
-    read -r YOUR_EMAIL
-    echo "Your phone number:"
-    read -r YOUR_PHONE
-    get_consent "Are details correct now?"
-    if has_consent; then
-        e_success "Details set"
-    else
-        e_failure "Please rerun script and set the details correctly"
-        exit 0
-    fi
+    e_failure "Please rerun script and set the details correctly"
+    killall caffeinate
+    exit 0
 fi
 e_success "Details set"
 
 echo "========================================================================"
 echo "SIGN IN TO THE MAC APP STORE"
 open /System/Applications/App\ Store.app/
-anykey "Sign in to the App Store. Press any key when you're done, to continue.\n"
+e_pending "Sign in to the App Store to get xcode tools"
+anykey "Press any key when you're done, to continue."
+
+get_consent "Ready to start the installation process?"
+
+if ! has_consent; then
+    e_falure "Please rerun the script if you wish to carry out the installation"
+    killall caffeinate
+    exit 0
+fi
+
 echo "========================================================================"
 echo "Installing xcode tools and brew"
 echo "========================================================================"
@@ -140,12 +136,13 @@ ssh-add -K ~/.ssh/id_rsa
 echo "========================================================================"
 echo "Making hosts file"
 echo "========================================================================"
-sudo cp -f ./assets/hosts /private/etc/hosts
+
 curl "https://someonewhocares.org/hosts/zero/hosts" | sudo tee -a /etc/hosts
 
 echo "========================================================================"
 echo "Setting DNS for Wifi"
 echo "========================================================================"
+
 sudo networksetup -setdnsservers Wi-Fi 1.1.1.1 8.8.8.8 8.8.4.4
 sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 
@@ -413,4 +410,5 @@ echo "Save this to 1Password, and keep it for when the computer needs"
 echo "to go to the hospital."
 echo ""
 read -pr "Press any key to finish and reboot… " -n1 -s
+killall caffeinate
 sudo shutdown -r now
