@@ -5,8 +5,10 @@ color_red=$(tput setaf 1)
 color_green=$(tput setaf 2)
 color_yellow=$(tput setaf 3)
 
-anykey() {
-  read -rsn1 -p"Press any key to continue";echo
+e_anykey() {
+  e_pending "$1"
+  read -rsn1 -p " ";
+  printf "\n"
 }
 
 
@@ -31,7 +33,7 @@ e_settled() {
 }
 
 copy() {
-  printf "$1" | pbcopy
+  echo -n "$(pwd)" | pbcopy
 }
 
 has_command() {

@@ -1,10 +1,9 @@
-#!/usr/bin/bash
+#!/bin/bash
 
-source scripts/_utils.sh
+source "scripts/_utils.sh"
 
-printf "Skriv noe\n"
-read -r INPUT
+echo "SIGN IN TO THE MAC APP STORE"
 
-copy "$INPUT"
+open /System/Applications/App\ Store.app/
 
-anykey
+e_anykey "Sign in to the App Store. Press any key when you're done, to continue."
