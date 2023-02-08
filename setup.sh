@@ -2,37 +2,29 @@
 
 source "scripts/_utils.sh"
 
-clear
-
-INTRO="
-███    ███  █████   ██████     ███████ ███████ ████████ ██    ██ ██████  
-████  ████ ██   ██ ██          ██      ██         ██    ██    ██ ██   ██ 
-██ ████ ██ ███████ ██          ███████ █████      ██    ██    ██ ██████  
-██  ██  ██ ██   ██ ██               ██ ██         ██    ██    ██ ██      
-██      ██ ██   ██  ██████     ███████ ███████    ██     ██████  ██"
-
-printf "%s" "$INTRO"
-printf "\n"
-
-SEP="========================================================================"
-
-printf "%s" "$SEP"
-printf "\n\n\n"
-
-caffeinate -dimus
+refresh_header
 
 # from https://raw.githubusercontent.com/jlom/macsetup/master/setup.sh
 
-# echo "Enable sudo so the script has the necessary permissions"
-# sudo -v
-# while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+echo "Enable sudo so the script has the necessary permissions"
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+refresh_header
+echo "Caffeinating so system sleep doesn't abort the script"
+caffeinate -u &
+
+refresh_header
+# LOCATION="$(curl ipinfo.io | jq '.city')"
+# WEATHERURL="http://wttr.in/$LOCATION?format=%l:+%c+%f"
+# the_weather="$(curl -sm2 "$WEATHERURL")"
+# printf "%${COLUMNS}s\n" "${the_weather:-I hope the weather is nice}"
 # Ask for user variables up front
-echo "SET COMPUTER NAME"
+echo "Set your $(e_bold)COMPUTER NAME, LOCK SCREEN, GITHUB and SSH information"
+TIP="Tip: Don't include your real name"
+e_magenta "$TIP"
+echo "Computer name:"
 read -r COMPUTER_NAME
-
-echo "========================================================================"
-echo "SET YOUR LOCK SCREEN, GITHUB and SSH INFORMATION"
 echo "Your name:"
 read -r YOUR_NAME
 echo "Your email:"
@@ -40,9 +32,9 @@ read -r YOUR_EMAIL
 echo "Your phone number:"
 read -r YOUR_PHONE
 
-echo "========================================================================"
+refresh_header
 
-echo "Verify details"
+e_bold "Verify details"
 echo 
 echo "Computer name: $COMPUTER_NAME"
 echo "Name: $YOUR_NAME"

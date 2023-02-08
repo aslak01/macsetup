@@ -4,6 +4,10 @@ color_reset=$(tput sgr0)
 color_red=$(tput setaf 1)
 color_green=$(tput setaf 2)
 color_yellow=$(tput setaf 3)
+color_magenta=$(tput setaf 5)
+
+bold=$(tput bold)
+normal=$(tput sgr0)
 
 e_anykey() {
   e_pending "$1"
@@ -30,6 +34,14 @@ e_success() {
 e_settled() {
   printf "${color_yellow}✨ %s!${color_reset}" "$@"
   printf "\n"
+}
+
+e_magenta() {
+  printf "${color_magenta}%s${color_reset}" "$@"
+  printf "\n"
+}
+e_bold() {
+  printf "${bold}%s${normal}" "$@"
 }
 
 copy() {
@@ -148,3 +160,20 @@ if ! [[ "${OSTYPE}" == "darwin"* ]]; then
   e_failure "Unsupported operating system (macOS only)"
   exit 1
 fi
+
+INTRO="
+███    ███  █████   ██████     ███████ ███████ ████████ ██    ██ ██████  
+████  ████ ██   ██ ██          ██      ██         ██    ██    ██ ██   ██ 
+██ ████ ██ ███████ ██          ███████ █████      ██    ██    ██ ██████  
+██  ██  ██ ██   ██ ██               ██ ██         ██    ██    ██ ██      
+██      ██ ██   ██  ██████     ███████ ███████    ██     ██████  ██"
+
+SEP="========================================================================"
+
+refresh_header() {
+  clear
+  printf "%s" "$INTRO"
+  printf "\n"
+  printf "%s" "$SEP"
+  printf "\n\n\n"
+}
