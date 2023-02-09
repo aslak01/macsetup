@@ -4,7 +4,12 @@ color_reset=$(tput sgr0)
 color_red=$(tput setaf 1)
 color_green=$(tput setaf 2)
 color_yellow=$(tput setaf 3)
+color_blue=$(tput setaf 4)
 color_magenta=$(tput setaf 5)
+color_cyan=$(tput setaf 6)
+
+export color_blue
+export color_cyan
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -151,8 +156,8 @@ has_consent() {
 }
 
 get_consent() {
-  printf "❔ %s [y/n]:" "$@"
-  read -p " " -n 1
+  printf "%s? [y/n]:" "$@"
+  read -rp " " -n 1
   printf "\n"
 }
 
@@ -177,3 +182,25 @@ refresh_header() {
   printf "%s" "$SEP"
   printf "\n\n\n"
 }
+subheading() {
+  strlen=${#1}
+  seplen=${#SEP}
+  difference=$((seplen - strlen))
+  leftspace=$(( difference / 2 ))
+
+  echo
+  echo "$SEP"
+  printf "%0.s " $(seq 1 $leftspace)
+  echo "$1"
+  echo "$SEP"
+  echo
+}
+
+rightalign() {
+  seplen=${#SEP}
+  strlen=${#1}
+  difference=$((seplen - strlen))
+  printf "%0.s " $(seq 1 $difference)
+  echo "$1"
+}
+

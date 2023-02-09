@@ -10,7 +10,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 refresh_header
-echo "Caffeinating so system sleep doesn't abort the script"
+subheading "Caffeinating so system sleep doesn't abort the script"
 caffeinate -u &
 
 refresh_header
@@ -19,9 +19,9 @@ refresh_header
 # the_weather="$(curl -sm2 "$WEATHERURL")"
 # printf "%${COLUMNS}s\n" "${the_weather:-I hope the weather is nice}"
 # Ask for user variables up front
-echo "Set your $(e_bold)COMPUTER NAME, LOCK SCREEN, GITHUB and SSH information"
+subheading "Set your COMPUTER NAME, LOCK SCREEN, GIT, and SSH information"
 TIP="Tip: Don't include your real name"
-e_magenta "$TIP"
+rightalign "$TIP"
 echo "Computer name:"
 read -r COMPUTER_NAME
 echo "Your name:"
@@ -33,12 +33,12 @@ read -r YOUR_PHONE
 
 refresh_header
 
-e_bold "Verify details"
-echo 
-echo -e "Computer name: ${color_green}$COMPUTER_NAME ${color_reset}"
-echo "Name: ${color_green}$YOUR_NAME${color_reset}"
-echo "Email: ${color_green}$YOUR_EMAIL${color_reset}"
-echo "Phone: ${color_green}$YOUR_PHONE${color_reset}"
+subheading "Verify details"
+
+echo -e "Computer name: ${color_yellow}$COMPUTER_NAME ${color_reset}"
+echo "Name: ${color_yellow}$YOUR_NAME${color_reset}"
+echo "Email: ${color_yellow}$YOUR_EMAIL${color_reset}"
+echo "Phone: ${color_yellow}$YOUR_PHONE${color_reset}"
 
 get_consent "Are your details correct?"
 if ! has_consent; then
@@ -46,18 +46,20 @@ if ! has_consent; then
     killall caffeinate
     exit 0
 fi
+
+refresh_header
+
 e_success "Details set"
 
-echo "========================================================================"
-echo "SIGN IN TO THE MAC APP STORE"
+echo "SIGN IN TO THE ${color_blue}MAC APP STORE${color_reset}"
 open /System/Applications/App\ Store.app/
 e_pending "Sign in to the App Store to get xcode tools"
-anykey "Press any key when you're done, to continue."
+e_anykey "Press any key when you're done, to continue."
 
 get_consent "Ready to start the installation process?"
 
 if ! has_consent; then
-    e_falure "Please rerun the script if you wish to carry out the installation"
+    e_failure "Please rerun the script if you wish to carry out the installation"
     killall caffeinate
     exit 0
 fi
