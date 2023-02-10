@@ -156,7 +156,7 @@ has_consent() {
 }
 
 get_consent() {
-  printf "%s? [y/n]:" "$@"
+  printf "%s [y/n]:" "$@"
   read -rp " " -n 1
   printf "\n"
 }
