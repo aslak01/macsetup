@@ -146,6 +146,7 @@ subheading "Setting firmware password"
 # Prompt for FW password when booting from a different volume
 get_consent "Set firmware password?"
 if has_consent; then
+    FW_PWD_SET=1
     FW_PWD=$(openssl rand -base64 10)
     copy "${FW_PWD}"
     echo "Prompt for FW password when booting from a different volume"
@@ -238,6 +239,11 @@ echo "================================================================="
 echo "Username: admintwo"
 echo "Password: ${ADMINTWO_PASSWORD}"
 echo "================================================================="
+if [ -z "$FW_PWD_SET" ]; then
+  echo "Firmware password suggestion is:"
+  echo "Password: ${FW_PWD}"
+  echo "================================================================="
+fi
 echo "Save this to 1Password, and keep it for when the computer needs"
 echo "to go to the hospital."
 echo ""

@@ -67,6 +67,21 @@ clear
 
 subheading "Setup start"
 
+e_bold "This script will install"
+echo "* xcode-select"
+echo "* a whole bunch of brew packages as configured by the Brewfile"
+echo "* install zip zsh and deno"
+echo "* install selected macos packages"
+echo "* configure global git variables with the information previously provided"
+echo "* generate ssh keys"
+echo "* copy someonewhocares' hosts file to /etc/hosts"
+echo "* configure wifi dns servers"
+echo "* on demand generate a firmware password"
+echo "* set computer name"
+echo "* enable filevault and firewall"
+echo "* create a backup admin account"
+echo "* tune various macos system preferences, as defined in scripts/macos_settings.sh"
+
 get_consent "Ready to start the installation process?"
 
 if ! has_consent; then
@@ -270,9 +285,11 @@ echo "================================================================="
 echo "Username: admintwo"
 echo "Password: ${ADMINTWO_PASSWORD}"
 echo "================================================================="
-echo "Firmware password is:"
-echo "Password: ${FW_PWD}"
-echo "================================================================="
+if [ -z "$FW_PWD" ]; then
+  echo "Firmware password suggestion is:"
+  echo "Password: ${FW_PWD}"
+  echo "================================================================="
+fi
 echo "Save these in a password manager. Admin two can come in handy e.g. when the computer needs"
 echo "to go to the hospital."
 echo ""
