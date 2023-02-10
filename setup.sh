@@ -141,7 +141,8 @@ git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 
 subheading "Generating SSH keys"
 
-ssh-keygen -t rsa -b 4096 -C "${YOUR_EMAIL}" -f ~/.ssh/id_rsa -P ""
+# gen ssh key with empty passphrase (-N "")
+ssh-keygen -t rsa -b 4096 -C "${YOUR_EMAIL}" -f ~/.ssh/id_rsa -N ""
 eval "$(ssh-agent -s)"
 ssh-add -K ~/.ssh/id_rsa
 # cp -f ./assets/config ~/.ssh/config
