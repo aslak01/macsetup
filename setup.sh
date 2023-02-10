@@ -9,6 +9,11 @@ echo "Enable sudo so the script has the necessary permissions"
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
+if [[ $EUID -ne 0 ]]; then
+  e_failure "You need to be able to use sudo to run this script"
+  exit
+fi
+
 refresh_header
 subheading "Caffeinating so system sleep doesn't abort the script"
 caffeinate -u &
