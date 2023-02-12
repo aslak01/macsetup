@@ -3,19 +3,36 @@
 echo "========================================================================"
 echo "Configuring macOS"
 echo "========================================================================"
+
 # Always boot in verbose mode
 # sudo nvram boot-args="-v"
 
-# Setup lock screen message
+echo "Set lock screen message:"
+echo "If found call ${YOUR_PHONE} or email ${YOUR_EMAIL}"
+
 sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText "If found call ${YOUR_PHONE} or email ${YOUR_EMAIL}"
 
-# Require password as soon as screensaver or sleep mode starts
+echo "Use function F1, F2, etc. keys as standard function keys"
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+
+
+echo "Require password as soon as screensaver or sleep mode starts"
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-# Enable tap-to-click
+echo "Enable tap-to-click for current user and login screen"
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+
+echo "Disable “natural” (Lion-style) scrolling"
+defaults write NSGlobalDomain com.apple.swipescrolldirection -bool false
+
+# Increase sound quality for Bluetooth headphones/headsets
+# defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
+
+echo "Disable automatically rearrange spaces based on recent use:"
+defaults write com.apple.dock mru-spaces -bool false
 
 # Set fast key repeat rate
 # defaults write NSGlobalDomain KeyRepeat -int 0
@@ -26,157 +43,182 @@ defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 # Show battery percentage
 # defaults write com.apple.menuextra.battery ShowPercent -bool true
 
-# Check for software updates daily, not just once per week
+echo "Increase window resize speed for Cocoa applications"
+defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+
+echo "Check for software updates daily, not just once per week"
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 
-# Expand save panel
+echo "Expand save panel"
 defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
-# Automatically quit printer app once the print jobs complete
+echo "Expand print panel by default"
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+
+echo "Automatically quit printer app once the print jobs complete"
 defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
 
-## TOP RIGHT SCREEN CORNER → START SCREEN SAVER
-# defaults write com.apple.dock wvous-tr-corner -int 5
-# defaults write com.apple.dock wvous-tr-modifier -int 0
+echo "Save to disk (not to iCloud) by default"
+defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
 
 # Disable press-and-hold for keys in favor of key repeat
 # defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
-# Enable full keyboard access for all controls
-# (e.g. enable Tab in modal dialogs)
+echo "Enable full keyboard access for all controls"
+echo "(e.g. enable Tab in modal dialogs)"
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 ## FINDER
 ## =============================================================================
-# No delay for proxy icons
+
+echo "place screenshots in Downloads folder instead of desktop"
+defaults write com.apple.screencapture location "${HOME}/Downloads"
+
+# Disable shadow in screenshots
+# defaults write com.apple.screencapture disable-shadow -bool true
+
+echo "No delay for proxy icons"
 defaults write -g NSToolbarTitleViewRolloverDelay -float 0
 
-# Wide alerts
-# defaults write -g NSAlertMetricsGatheringEnabled -bool false
-
-# Show filename extensions by default
+echo "Show filename extensions by default"
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# Show all files
+echo "Show all files"
 defaults write com.apple.finder AppleShowAllFiles -bool true
-chflags nohidden ~/Library
+sudo chflags nohidden ~/Library
+sudo chflags nohidden /Volumes
 
-# Hide desktop icons
-defaults write com.apple.finder CreateDesktop -bool false
+echo "Allow quitting via ⌘ + Q (doing so will also hide desktop icons)"
+defaults write com.apple.finder QuitMenuItem -bool true
 
-# Set default location for new Finder windows
+echo "Set default location for new Finder windows to file://${HOME}/"
 # For other paths, use `PfLo` and `file:///full/path/here/`
 defaults write com.apple.finder NewWindowTarget -string "PfLo"
 defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
-# When performing a search, search the current folder by default
+echo "When performing a search, search the current folder by default"
 defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 
-# Open finder in column view
+echo "Open finder in column view"
 defaults write com.apple.finder AlwaysOpenInColumnView true
 defaults write com.apple.finder FXPreferredViewStyle Clmv
 
-# Set sidebar font size to small
+echo "Set sidebar font size to small"
 defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
 
-# Show status bar
+echo "Show status bar"
 defaults write com.apple.finder ShowStatusBar -bool true
 
-# Expand the following File Info panes:
-# “General”, “Open with”, and “Sharing & Permissions”
+echo "Expand the following File Info panes:"
+echo "“General”, “Open with”, and “Sharing & Permissions”"
 defaults write com.apple.finder FXInfoPanesExpanded -dict \
   General -bool true \
   OpenWith -bool true \
   Privileges -bool true
 
-# Display full POSIX path as Finder window title
+echo "Display full POSIX path as Finder window title"
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
-# Avoid creating .DS_Store files on network or USB volumes
+echo "Avoid creating .DS_Store files on network or USB volumes"
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 ## TEXTEDIT
 ## =============================================================================
-# Use plain text mode for new TextEdit documents
+echo "Use plain text mode for new TextEdit documents"
 defaults write com.apple.TextEdit RichText -int 0
 
-# Open and save files as UTF-8 in TextEdit
+echo "Open and save files as UTF-8 in TextEdit"
 defaults write com.apple.TextEdit PlainTextEncoding -int 4
 defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
-# Start with a blank document, instead of open dialog
+echo "Start textedit with a blank document, instead of open dialog"
 defaults write -g NSShowAppCentricOpenPanelInsteadOfUntitledFile -bool false
 
 ## PHOTOS
 ## =============================================================================
-# Disable Photos.app from starting everytime a device is plugged in
+echo "Disable Photos.app from starting everytime a device is plugged in"
 defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 
 ## SAFARI
 ## =============================================================================
-# Safari devtools
+echo "Enable Safari devtools"
 defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-# Prevent Safari from opening ‘safe’ files automatically after downloading
+echo "Enable continuous spellchecking"
+defaults write com.apple.Safari WebContinuousSpellCheckingEnabled -bool true
+echo "Disable auto-correct"
+defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
+
+echo "Prevent Safari from opening ‘safe’ files automatically after downloading"
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 
-# Privacy: don’t send search queries to Apple
+echo "Privacy: don’t send search queries to Apple"
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
 defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 
-# Show the full URL in the address bar (note: this still hides the scheme)
+echo "Show the full URL in the address bar (note: this still hides the scheme)"
 defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
-# Add a context menu item for showing the Web Inspector in web views
+echo "Add a context menu item for showing the Web Inspector in web views"
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-# Warn about fraudulent websites
-defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+# echo "Warn about fraudulent websites"
+# defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
 
-# Enable “Do Not Track”
+echo "Enable “Do Not Track”"
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 
-# Update extensions automatically
+echo "Update extensions automatically"
 defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
 
-# Hide Safari’s bookmarks bar by default
+echo "Hide Safari’s bookmarks bar by default"
 defaults write com.apple.Safari ShowFavoritesBar -bool false
 
-# Press Tab to highlight each item on a web page
-defaults write com.apple.Safari WebKitTabToLinksPreferenceKey -bool true
-defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks -bool true
+echo "Disable Java"
+defaults write com.apple.Safari WebKitJavaEnabled -bool false
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool false
+defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabledForLocalFiles -bool false
+
+# echo "Press Tab to highlight each item on a web page"
+# defaults write com.apple.Safari WebKitTabToLinksPreferenceKey -bool true
+# defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2TabsToLinks -bool true
 
 ## iTUNES
 ## =============================================================================
-# Stop iTunes from responding to the keyboard media keys
+echo "Stop iTunes from responding to the keyboard media keys"
 launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
 
 ## MAIL
 ## =============================================================================
-# Add the keyboard shortcut CMD + Enter to send an email
+echo "Add the keyboard shortcut CMD + Enter to send an email"
 defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" "@\U21a9"
 
-# Set email addresses to copy as 'foo@example.com' instead of 'Foo Bar <foo@example.com>'
+echo "Set email addresses to copy as 'foo@example.com' instead of 'Foo Bar <foo@example.com>'"
 defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
+
+echo "Disable send and reply animations in Mail.app"
+defaults write com.apple.mail DisableReplyAnimations -bool true
+defaults write com.apple.mail DisableSendAnimations -bool true
 
 ## DOCK
 ## =============================================================================
-# autohide dock
+echo "autohide dock"
 defaults write com.apple.Dock autohide -bool true
-# Remove the auto-hiding Dock delay
+echo "Remove the auto-hiding Dock delay"
 defaults write com.apple.dock autohide-delay -float 0
-# Remove the animation when hiding/showing the Dock
+echo "Remove the animation when hiding/showing the Dock"
 defaults write com.apple.dock autohide-time-modifier -float 0
-# set dock icon size
+echo "set dock icon size"
 defaults write com.apple.dock tilesize -int 24
-# Don’t show recent applications in Dock
+echo "Don’t show recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
 
 # Disable autocorrect
