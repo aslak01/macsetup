@@ -4,18 +4,34 @@ source scripts/_utils.sh
 
 refresh_header
 
+subheading "Allow your current terminal emulator full disk access"
+
+echo "To do this, open ${bold}System Settings${normal} and go to ${bold}Privacy and Security${normal}."
+
+e_anykey "Press any key to continue when this is done."
+
+get_consent "Have you granted disk access to your terminal?"
+if ! has_consent; then
+    e_failure "Please grant the access and then rerun the script"
+    killall caffeinate
+    exit 0
+fi
 
 echo "Enable sudo so the script has the necessary permissions"
 sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-if [[ $EUID -ne 0 ]]; then
+if [[ $(logname) != 'root' ]]; then
   e_failure "You need to be able to use sudo to run this script"
   exit
+else
+  e_success "You are root"
 fi
 
 refresh_header
+
 subheading "Caffeinating so system sleep doesn't abort the script"
+
 caffeinate -u &
 
 refresh_header
@@ -100,7 +116,7 @@ xcode-select --install
 
 # Check for Homebrew, install if we don't have it
 if test ! "$(which brew)"; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     echo "eval '$(/opt/homebrew/bin/brew shellenv)'" >> ~/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
