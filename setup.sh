@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "scripts/_utils.sh"
+source scripts/_utils.sh
 
 refresh_header
 
@@ -212,11 +212,9 @@ subheading "Tuning MacOS settings"
 # Always boot in verbose mode
 # sudo nvram boot-args="-v"
 
-# Setup lock screen message
-sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText "If found call ${YOUR_PHONE} or email ${YOUR_EMAIL}"
-
 # MacOS settings:
-source "scripts/macos_settings.sh"
+sudo chmod +x scripts/macos_settings.sh
+source scripts/macos_settings.sh
 
 
 subheading "Restarting affected processes"
