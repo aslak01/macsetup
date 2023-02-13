@@ -244,8 +244,6 @@ subheading "Checking for MacOS software updates"
 # Run a MacOS software update
 sudo softwareupdate -ia
 
-clear
-
 refresh_header
 
 e_success "Done!"
