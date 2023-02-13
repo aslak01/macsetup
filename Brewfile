@@ -54,17 +54,6 @@ brew 'streamlink'
 brew 'openttd'
 brew 'fheroes2'
 
-# Quicklook
-brew 'qlstephen'
-brew 'qlmarkdown'
-brew 'quicklook-json'
-brew 'qlprettypatch'
-brew 'quicklook-csv'
-brew 'qlimagesize'
-brew 'webpquicklook'
-brew 'suspicious-package'
-brew 'quicklookase'
-brew 'qlvideo'
 
 # casks
 cask 'amethyst'
@@ -81,7 +70,7 @@ cask 'iterm2'
 cask 'keka'
 cask 'ngrok'
 cask 'postman'
-cask 'sequel-pro'
+cask 'sequel-ace'
 cask 'slack'
 cask 'spotify'
 cask 'steam'
@@ -93,6 +82,10 @@ cask 'finicky'
 cask 'suspicious-package'
 cask 'vlc'
 cask 'keepingyouawake'
+
+# Quicklook
+cask 'qlstephen'
+cask 'suspicious-package'
 
 # fonts
 cask 'font-jetbrains-mono-nerd-font'
