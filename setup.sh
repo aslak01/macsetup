@@ -163,10 +163,10 @@ git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 subheading "Generating SSH keys"
 
 # gen ssh key with empty passphrase (-N "")
-ssh-keygen -t rsa -b 4096 -C "${YOUR_EMAIL}" -f ~/.ssh/id_rsa -N ""
+ssh-keygen -t ed25519 -C "${YOUR_EMAIL}" -f ~/.ssh/id_ed25519 -N ""
 eval "$(ssh-agent -s)"
-ssh-add -K ~/.ssh/id_rsa
-# cp -f ./assets/config ~/.ssh/config
+ssh-add ~/.ssh/id_ed25519
+cp -f ./assets/config ~/.ssh/config
 
 subheading "Making hosts file"
 
