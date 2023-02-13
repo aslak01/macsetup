@@ -89,11 +89,11 @@ subheading "Setup start"
 e_bold "This script will install"
 printf "\n"
 echo "* xcode-select"
-echo "* a whole bunch of brew packages as configured by the Brewfile"
+echo "* brew packages as configured in the Brewfile"
 echo "* install zip zsh and deno"
-echo "* install selected macos packages"
+echo "* install selected apps from the app store"
 echo "* configure global git variables with the information previously provided"
-echo "* generate ssh keys"
+echo "* generate ssh key"
 echo "* copy someonewhocares' hosts file to /etc/hosts"
 echo "* configure wifi dns servers"
 echo "* set computer name"
@@ -177,8 +177,6 @@ subheading "Setting DNS for WiFi"
 
 sudo networksetup -setdnsservers Wi-Fi 1.1.1.1 8.8.8.8 8.8.4.4
 sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
-
-
 
 
 subheading "Setting computer name"
