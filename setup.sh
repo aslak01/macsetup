@@ -41,6 +41,8 @@ refresh_header
 # printf "%${COLUMNS}s\n" "${the_weather:-I hope the weather is nice}"
 
 # Ask for user variables up front
+
+
 subheading "Set your COMPUTER NAME, LOCK SCREEN, GIT, and SSH information"
 TIP="Tip: Don't include your real name"
 rightalign "$TIP"
@@ -54,6 +56,7 @@ echo "Your phone number:"
 read -r YOUR_PHONE
 
 refresh_header
+
 
 subheading "Verify details"
 
@@ -73,7 +76,6 @@ refresh_header
 
 e_success "Details set"
 
-clear
 
 subheading "APP STORE"
 
@@ -82,7 +84,6 @@ open /System/Applications/App\ Store.app/
 e_pending "Sign in to the App Store to get xcode tools and App Store apps with mas"
 e_anykey "Press any key when you're done, to continue."
 
-clear
 
 subheading "Setup start"
 
@@ -124,15 +125,18 @@ fi
 # Opt out of brew analytics
 brew analytics off
 
+
 subheading "Installing brew packages"
 
 brew update
+brew upgrade
 
 brew bundle --file=./Brewfile
 
 subheading "Cleaning up"
 
 brew cleanup
+
 
 subheading "Installing non-brew binaries"
 
@@ -141,6 +145,9 @@ zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
 # Deno (updated too frequently to want to manage it with brew)
 curl -fsSL https://deno.land/x/install/install.sh | sh
+
+# install current node lts with n
+n lts
 
 
 subheading "Installing App Store apps"
@@ -238,6 +245,7 @@ for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
 	"Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer"; do
 	killall "$app" >/dev/null 2>&1
 done
+
 
 subheading "Checking for MacOS software updates"
 
