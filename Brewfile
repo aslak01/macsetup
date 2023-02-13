@@ -64,10 +64,11 @@ brew 'qlimagesize'
 brew 'webpquicklook'
 brew 'suspicious-package'
 brew 'quicklookase'
-brew 'qlvideo''
+brew 'qlvideo'
 
 # casks
 cask 'amethyst'
+cask 'adguard'
 cask 'discord'
 cask 'basictex'
 cask 'firefox'
