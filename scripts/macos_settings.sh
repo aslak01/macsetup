@@ -21,6 +21,7 @@ defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 echo "Enable tap-to-click for current user and login screen"
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
@@ -210,16 +211,26 @@ defaults write com.apple.mail DisableSendAnimations -bool true
 
 ## DOCK
 ## =============================================================================
+
 echo "autohide dock"
 defaults write com.apple.Dock autohide -bool true
+
 echo "Remove the auto-hiding Dock delay"
 defaults write com.apple.dock autohide-delay -float 0
+
 echo "Remove the animation when hiding/showing the Dock"
 defaults write com.apple.dock autohide-time-modifier -float 0
+
 echo "set dock icon size"
 defaults write com.apple.dock tilesize -int 24
+
 echo "Don’t show recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
 
+echo "Disable hot corners"
+defaults write com.apple.dock wvous-tl-corner -int 0
+defaults write com.apple.dock wvous-tr-corner -int 0
+defaults write com.apple.dock wvous-bl-corner -int 0
+defaults write com.apple.dock wvous-br-corner -int 0
 # Disable autocorrect
 # defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
