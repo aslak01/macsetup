@@ -82,6 +82,8 @@ cask 'finicky'
 cask 'suspicious-package'
 cask 'vlc'
 cask 'keepingyouawake'
+cask 'orion'
+cask 'karabiner-elements'
 
 # Quicklook
 cask 'qlstephen'
