@@ -4,6 +4,9 @@ echo "========================================================================"
 echo "Configuring macOS"
 echo "========================================================================"
 
+echo "Closing System Settings if open to prevent collisions"
+osascript -e 'tell application "System Settings" to quit'
+
 # Always boot in verbose mode
 # sudo nvram boot-args="-v"
 
@@ -233,4 +236,18 @@ defaults write com.apple.dock wvous-tr-corner -int 0
 defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
 # Disable autocorrect
-# defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+# defaults write NSGlobalDomain NSAutomaticSpelliPreferencesngCorrectionEnabled -bool false
+#
+
+running "Speed up Mission Control animations"
+defaults write com.apple.dock expose-animation-duration -float 0.1;ok
+
+running "Don’t group windows by application in Mission Control"
+# (i.e. use the old Exposé behavior instead)
+defaults write com.apple.dock expose-group-by-app -bool false;ok
+
+
+echo "Enable three finger drag"
+defaults write com.apple.AppleMultitouchTrackpad DragLock -bool false
+defaults write com.apple.AppleMultitouchTrackpad Dragging -bool false
+defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
