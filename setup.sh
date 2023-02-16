@@ -2,6 +2,8 @@
 
 source scripts/_utils.sh
 
+DOTFILESGIT="git@github.com:aslak01/dotfiles.git"
+
 refresh_header
 
 subheading "Allow your current terminal emulator full disk access"
@@ -101,7 +103,7 @@ echo "* enable filevault"
 echo "* tune various macos system preferences, as defined in scripts/macos_settings.sh"
 echo ""
 echo "At the end of the installation process you will be prompted to add your fresh ssh key to github"
-echo "to clone dotfiles."
+echo "to clone and stow dotfiles."
 printf "\n\n"
 
 get_consent "Ready to start the installation process?"
@@ -158,7 +160,6 @@ subheading "Cleaning up"
 
 brew cleanup
 
-
 subheading "Installing non-brew binaries"
 
 # Zip Zsh plugin manager
@@ -198,6 +199,7 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cp -f ./assets/config ~/.ssh/config
 
+
 subheading "Making hosts file"
 
 cp /etc/hosts /etc/hosts.old
@@ -210,28 +212,7 @@ sudo networksetup -setdnsservers Wi-Fi 1.1.1.1 8.8.8.8 8.8.4.4
 sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 
 
-subheading "Setting computer name"
-
-sudo scutil --set ComputerName "${COMPUTER_NAME}"
-sudo scutil --set HostName "${COMPUTER_NAME}"
-sudo scutil --set LocalHostName "${COMPUTER_NAME}"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${COMPUTER_NAME}"
-
-
-subheading "Enable Filevault"
-
-sudo fdesetup enable
-
-
-# subheading "Enable firewall"
-
-# Turn on the firewall, and enable logging and stealth mode
-# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
-# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
-# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
-
 subheading "Allow touchID to sudo"
-# Setup sudo config (New one to allow TouchID to sudo)
 sudo cp -f ./assets/sudo /etc/pam.d/sudo
 
 
@@ -239,15 +220,6 @@ subheading "Tuning MacOS settings"
 
 sudo chmod +x scripts/macos_settings.sh
 source scripts/macos_settings.sh
-
-
-subheading "Restarting affected processes"
-
-# Kill all affected apps and services
-for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-	"Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer"; do
-	killall "$app" >/dev/null 2>&1
-done
 
 
 # subheading "Checking for MacOS software updates"
@@ -260,12 +232,26 @@ refresh_header
 e_success "Most installations are done!"
 
 printf "\n\n"
-echo "Now please add your new ssh key to github to clone the dotfiles repo"
-echo 
-:
+echo "Now please add your new ssh public key to github to clone the dotfiles repo"
+echo ""
+cat ~/.ssh/id_ed25519.pub
+echo ""
 
+e_anykey "Press any key to continue when this is done"
+
+get_consent "Did you add the new ssh public key to your github?"
+
+if has_consent; then
+  subheading "Cloning dotfiles to ~/dotfiles and stowing them"
+  echo "(dotfiles repo: $DOTFILES)"
+  git clone $DOTFILESGIT ~/dotfiles
+  rm ~/.zshrc
+  (cd ~/dotfiles; stow .)
+fi
+
+subheading "Done!"
+e_success "The script has reached the end"
+echo ""
 e_anykey "Press any key to finish and reboot…"
-
-killall caffeinate
 
 sudo shutdown -r now

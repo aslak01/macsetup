@@ -7,6 +7,18 @@ echo "========================================================================"
 echo "Closing System Settings if open to prevent collisions"
 osascript -e 'tell application "System Settings" to quit'
 
+subheading "Setting computer name"
+
+sudo scutil --set ComputerName "${COMPUTER_NAME}"
+sudo scutil --set HostName "${COMPUTER_NAME}"
+sudo scutil --set LocalHostName "${COMPUTER_NAME}"
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${COMPUTER_NAME}"
+
+
+subheading "Enable Filevault"
+
+sudo fdesetup enable
+
 # Always boot in verbose mode
 # sudo nvram boot-args="-v"
 
@@ -251,3 +263,19 @@ echo "Enable three finger drag"
 defaults write com.apple.AppleMultitouchTrackpad DragLock -bool false
 defaults write com.apple.AppleMultitouchTrackpad Dragging -bool false
 defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+
+# subheading "Enable firewall"
+
+# Turn on the firewall, and enable logging and stealth mode
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
+
+subheading "Restarting affected processes"
+
+# Kill all affected apps and services
+for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
+	"Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer"; do
+	killall "$app" >/dev/null 2>&1
+done
