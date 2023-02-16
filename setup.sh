@@ -174,6 +174,9 @@ curl -L https://bit.ly/n-install | bash
 # pnpm through npm to hopefully avoid an issue where pnpm is tied to node version at install time
 npm i -g pnpm
 
+# install rust noninteractively
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
 
 subheading "Installing App Store apps"
 
