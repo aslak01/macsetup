@@ -96,11 +96,12 @@ echo "* install selected apps from the app store"
 echo "* configure global git variables with the information previously provided"
 echo "* generate ssh key"
 echo "* copy someonewhocares' hosts file to /etc/hosts"
-echo "* configure wifi dns servers"
 echo "* set computer name"
-echo "* enable filevault and firewall"
-echo "* create a backup admin account"
+echo "* enable filevault"
 echo "* tune various macos system preferences, as defined in scripts/macos_settings.sh"
+echo ""
+echo "At the end of the installation process you will be prompted to add your fresh ssh key to github"
+echo "to clone dotfiles."
 printf "\n\n"
 
 get_consent "Ready to start the installation process?"
@@ -160,17 +161,17 @@ brew cleanup
 
 subheading "Installing non-brew binaries"
 
-# installing pnpm 
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-
 # Zip Zsh plugin manager
 zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
 # Deno (updated too frequently to want to manage it with brew)
 curl -fsSL https://deno.land/x/install/install.sh | sh
 
-# node lts through n
+# install n (node version manager) and current node lts
 curl -L https://bit.ly/n-install | bash
+
+# pnpm through npm to hopefully avoid an issue where pnpm is tied to node version at install time
+npm i -g pnpm
 
 
 subheading "Installing App Store apps"
@@ -186,7 +187,6 @@ subheading "Configuring git"
 git config --global user.name "${YOUR_NAME}"
 git config --global user.email "${YOUR_EMAIL}"
 git config --global pull.rebase true
-# Add diff-so-fancy config
 git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 
 
@@ -200,6 +200,7 @@ cp -f ./assets/config ~/.ssh/config
 
 subheading "Making hosts file"
 
+cp /etc/hosts /etc/hosts.old
 curl "https://someonewhocares.org/hosts/zero/hosts" | sudo tee -a /etc/hosts
 
 
@@ -219,33 +220,15 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 
 subheading "Enable Filevault"
 
-# Enable FileVault
 sudo fdesetup enable
 
 
-subheading "Enable firewall"
+# subheading "Enable firewall"
 
 # Turn on the firewall, and enable logging and stealth mode
-sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
-sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+# sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
 # sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
-
-
-subheading "Setting up a new admin account"
-## So I don't have to give up my real password to Apple, in case I need to hand
-## the machine over at some point.
-## =============================================================================
-ADMINTWO_PASSWORD=$(openssl rand -base64 8)
-sudo dscl . create /Users/admintwo
-sudo dscl . create /Users/admintwo RealName "Extra Admin Account"
-sudo dscl . create /Users/admintwo hint ""
-sudo dscl . passwd /Users/admintwo "${ADMINTWO_PASSWORD}"
-sudo dscl . create /Users/admintwo UniqueID 550
-sudo dscl . create /Users/admintwo PrimaryGroupID 80
-sudo dscl . create /Users/admintwo UserShell /bin/bash
-sudo dscl . create /Users/admintwo NFSHomeDirectory /Users/admintwo
-sudo createhomedir -u admintwo
-
 
 subheading "Allow touchID to sudo"
 # Setup sudo config (New one to allow TouchID to sudo)
@@ -253,10 +236,7 @@ sudo cp -f ./assets/sudo /etc/pam.d/sudo
 
 
 subheading "Tuning MacOS settings"
-# Always boot in verbose mode
-# sudo nvram boot-args="-v"
 
-# MacOS settings:
 sudo chmod +x scripts/macos_settings.sh
 source scripts/macos_settings.sh
 
@@ -270,25 +250,19 @@ for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
 done
 
 
-subheading "Checking for MacOS software updates"
+# subheading "Checking for MacOS software updates"
 
 # Run a MacOS software update
-sudo softwareupdate -ia
+# sudo softwareupdate -ia
 
 refresh_header
 
-e_success "Done!"
-echo ""
-echo "Congrats, $YOUR_NAME. Setup is complete."
-echo ""
-echo "We've created a ${bold}admintwo${normal} user with the following account info:"
-echo "================================================================="
-echo "Username: admintwo"
-echo "Password: ${ADMINTWO_PASSWORD}"
-echo "================================================================="
-echo "Save this password in a password manager."
-echo "Admin two is useful when the computer needs to go to the doctor."
-echo ""
+e_success "Most installations are done!"
+
+printf "\n\n"
+echo "Now please add your new ssh key to github to clone the dotfiles repo"
+echo 
+:
 
 e_anykey "Press any key to finish and reboot…"
 
