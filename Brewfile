@@ -40,7 +40,6 @@ brew 'tree-sitter'
 brew 'sqlite'
 brew 'neofetch'
 brew 'neovim'
-brew 'n'
 brew 'mas'
 brew 'tldr'
 

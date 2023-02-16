@@ -160,14 +160,17 @@ brew cleanup
 
 subheading "Installing non-brew binaries"
 
+# installing pnpm 
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+
 # Zip Zsh plugin manager
 zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
 # Deno (updated too frequently to want to manage it with brew)
 curl -fsSL https://deno.land/x/install/install.sh | sh
 
-# install current node lts with n
-n lts
+# node lts through n
+curl -L https://bit.ly/n-install | bash
 
 
 subheading "Installing App Store apps"
