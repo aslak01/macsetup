@@ -162,14 +162,18 @@ defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
 ## SAFARI
 ## =============================================================================
 echo "Enable Safari devtools"
-defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+open /Applications/Safari.app/
+sleep 1
+killall Safari
+defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
-defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+echo "Show Safari debug menu"
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 
 echo "Enable continuous spellchecking"
 defaults write com.apple.Safari WebContinuousSpellCheckingEnabled -bool true
+
 echo "Disable auto-correct"
 defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
 
@@ -180,8 +184,8 @@ echo "Privacy: don’t send search queries to Apple"
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
 defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 
-echo "Show the full URL in the address bar (note: this still hides the scheme)"
-defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+# echo "Show the full URL in the address bar (note: this still hides the scheme)"
+# defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 echo "Add a context menu item for showing the Web Inspector in web views"
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
