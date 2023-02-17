@@ -105,7 +105,7 @@ if ! has_consent; then
     exit 0
 fi
 
-subheading "Installing xcode tools and brew"
+subheading "Installing xcode tools"
 
 if ! xcode-select --print-path &> /dev/null; then
 
@@ -129,6 +129,8 @@ if ! xcode-select --print-path &> /dev/null; then
 
 fi
 
+subheading "Installing homebrew"
+
 # Check for Homebrew, install if we don't have it
 if test ! "$(which brew)"; then
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -147,24 +149,33 @@ brew upgrade
 
 brew bundle --file=./Brewfile
 
+
 subheading "Cleaning up"
 
 brew cleanup
 
-subheading "Installing non-brew binaries"
 
+subheading "Installing zip zsh"
 # Zip Zsh plugin manager
 zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
 
+
+subheading "Installing deno"
 # Deno (updated too frequently to want to manage it with brew)
 curl -fsSL https://deno.land/x/install/install.sh | sh
 
-# install n (node version manager) and current node lts
-curl -L https://bit.ly/n-install | bash
 
+subheading "Installing n, node lts, and npm"
+# install n (node version manager) and current node lts
+curl -L https://bit.ly/n-install | bash -s -- -y
+
+
+subheading "Installing pnpm"
 # pnpm through npm to hopefully avoid an issue where pnpm is tied to node version at install time
 npm i -g pnpm
 
+
+subheading "Installing rust"
 # install rust noninteractively
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
