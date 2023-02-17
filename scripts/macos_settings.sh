@@ -242,6 +242,9 @@ defaults write com.apple.dock tilesize -int 24
 echo "Don’t show recent applications in Dock"
 defaults write com.apple.dock show-recents -bool false
 
+echo "Removing all apps from dock"
+defaults write com.apple.dock persistent-apps -array
+
 echo "Disable hot corners"
 defaults write com.apple.dock wvous-tl-corner -int 0
 defaults write com.apple.dock wvous-tr-corner -int 0
