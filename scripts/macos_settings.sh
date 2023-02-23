@@ -256,7 +256,10 @@ defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
 # Disable autocorrect
 # defaults write NSGlobalDomain NSAutomaticSpelliPreferencesngCorrectionEnabled -bool false
-#
+
+echo "Increase mouse and trackpad sensitivity"
+defaults write -g com.apple.mouse.scaling 1
+defaults write -g com.apple.trackpad.scaling 1
 
 running "Speed up Mission Control animations"
 defaults write com.apple.dock expose-animation-duration -float 0.1;ok

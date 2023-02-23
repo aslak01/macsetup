@@ -169,6 +169,9 @@ subheading "Installing n, node lts, and npm"
 # install n (node version manager) and current node lts
 curl -L https://bit.ly/n-install | bash -s -- -y
 
+# Hopefully sourcing n, node & npm so next bit can run
+export N_PREFIX=$HOME/.n
+export PATH=$N_PREFIX/bin:$PATH
 
 subheading "Installing pnpm"
 # pnpm through npm to hopefully avoid an issue where pnpm is tied to node version at install time
