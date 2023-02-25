@@ -165,6 +165,10 @@ subheading "Installing deno"
 curl -fsSL https://deno.land/x/install/install.sh | sh
 
 
+subheading "Installing bun"
+curl -fsSL https://bun.sh/install | bash
+
+
 subheading "Installing n, node lts, and npm"
 # install n (node version manager) and current node lts
 curl -L https://bit.ly/n-install | bash -s -- -y
