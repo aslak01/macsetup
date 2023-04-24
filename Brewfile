@@ -48,6 +48,7 @@ brew 'ffmpeg'
 brew 'mpv'
 brew 'yt-dlp'
 brew 'streamlink'
+brew 'imagemagick'
 
 brew 'openttd'
 brew 'fheroes2'
