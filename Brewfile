@@ -85,6 +85,7 @@ cask 'vlc'
 cask 'keepingyouawake'
 cask 'orion'
 cask 'karabiner-elements'
+cask 'mos'
 
 # Quicklook
 cask 'qlstephen'
