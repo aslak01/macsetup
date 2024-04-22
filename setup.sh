@@ -74,7 +74,7 @@ subheading "APP STORE"
 
 echo "SIGN IN TO THE ${color_blue}MAC APP STORE${color_reset}"
 open /System/Applications/App\ Store.app/
-e_pending "Sign in to the App Store to get xcode tools and App Store apps with mas"
+e_pending "Sign in to the App Store to get xcode tools and other App Store apps with mas"
 e_anykey "Press any key when you're done, to continue."
 
 
@@ -149,6 +149,9 @@ brew upgrade
 
 brew bundle --file=./Brewfile
 
+# start brew services
+brew services start borders
+
 
 subheading "Cleaning up"
 
@@ -182,26 +185,33 @@ subheading "Installing pnpm"
 npm i -g pnpm
 
 
-subheading "Installing rust"
+subheading "Installing rust, bob, nvim"
 # install rust noninteractively
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+cargo install bob-nvim
+
+bob install stable
 
 
 subheading "Installing App Store apps"
 
 # MAC APP STORE
-mas install 1480933944 # Vimari
-mas install 1458969831 # JSON Peep
+mas install 1458969831 # JSONPeep
 mas install 1437138382 # WhatFont
+mas install 1584519802 # Vimlike
+mas install 937984704 # Amphetamine
+mas install 1142051783 # LG Screen Manager
+mas install 1475387142 # Tailscale
+mas install 1287239339 # Color slurp
+mas install 409203825 # Numbers
 
-
-subheading "Configuring git"
-
-git config --global user.name "${YOUR_NAME}"
-git config --global user.email "${YOUR_EMAIL}"
-git config --global pull.rebase true
-git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-
+# subheading "Configuring git"
+#
+# git config --global user.name "${YOUR_NAME}"
+# git config --global user.email "${YOUR_EMAIL}"
+# git config --global pull.rebase true
+# git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
 
 subheading "Generating SSH keys"
 
@@ -211,11 +221,10 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cp -f ./assets/config ~/.ssh/config
 
-
-subheading "Making hosts file"
-
-cp /etc/hosts /etc/hosts.old
-curl "https://someonewhocares.org/hosts/zero/hosts" | sudo tee -a /etc/hosts
+# subheading "Making hosts file"
+#
+# cp /etc/hosts /etc/hosts.old
+# curl "https://someonewhocares.org/hosts/zero/hosts" | sudo tee -a /etc/hosts
 
 
 subheading "Setting DNS for WiFi"
