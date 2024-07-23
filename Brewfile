@@ -15,6 +15,7 @@ brew 'gnu-tar'
 brew 'gnu-which'
 brew 'groff'
 brew 'stow'
+brew 'urlview'
 
 # finding
 brew 'fd'
