@@ -6,6 +6,7 @@ tap 'homebrew/cask-versions'
 tap 'homebrew/core'
 tap 'shaunsingh/SFMono-Nerd-Font-Ligaturized'
 tap 'wez/wezterm'
+tap 'koekeishiya/formulae'
 
 # GNU
 brew 'coreutils'
@@ -29,6 +30,7 @@ brew 'jq'
 brew 'pandoc'
 brew 'rename'
 brew 'sd'
+brew 'tectonic'
 brew 'tree'
 
 # dev
@@ -43,14 +45,11 @@ brew 'git'
 brew 'go'
 brew 'lazygit'
 brew 'mas'
-brew 'neofetch'
-brew 'neovim'
 brew 'opam'
 brew 'rsync'
 brew 'sqlite'
 brew 'starship'
 brew 'tldr'
-brew 'tree-sitter'
 brew 'wget'
 brew 'zoxide'
 
@@ -68,6 +67,8 @@ brew 'yt-dlp'
 
 # macos ui
 brew 'borders'
+brew 'yabai'
+brew 'skhd'
 
 # mail
 brew 'abook'
@@ -80,12 +81,9 @@ brew 'pass' # pass
 brew 'fheroes2'
 brew 'openttd'
 
-
 # casks
 cask 'adguard'
-cask 'aerospace'
 cask 'balenaetcher'
-cask 'basictex'
 cask 'bettertouchtool'
 cask 'bruno'
 cask 'db-browser-for-sqlite'
@@ -96,6 +94,7 @@ cask 'firefox-developer-edition'
 cask 'gog-galaxy'
 cask 'google-chrome'
 cask 'handbrake'
+cask 'ice'
 cask 'iina'
 cask 'iterm2'
 cask 'jordanbaird-ice'
