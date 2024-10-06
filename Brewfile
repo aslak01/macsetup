@@ -1,12 +1,13 @@
 # brewfile
 tap 'homebrew/bundle'
-tap 'homebrew/cask'
-tap 'homebrew/cask-fonts'
-tap 'homebrew/cask-versions'
-tap 'homebrew/core'
 tap 'shaunsingh/SFMono-Nerd-Font-Ligaturized'
 tap 'wez/wezterm'
 tap 'koekeishiya/formulae'
+tap 'FelixKratz/formulae'
+
+# password requireres
+cask 'karabiner-elements'
+cask 'adguard'
 
 # GNU
 brew 'coreutils'
@@ -66,23 +67,21 @@ brew 'streamlink'
 brew 'yt-dlp'
 
 # macos ui
-brew 'borders'
-brew 'yabai'
-brew 'skhd'
+brew 'FelixKratz/formulae/borders'
+brew 'koekeishiya/formulae/yabai'
+brew 'koekeishiya/formulae/skhd'
 
 # mail
 brew 'abook'
 brew 'neomutt'
 brew 'notmuch'
 
-brew 'ks' # MacOS Keychain pass
-brew 'pass' # pass
+brew 'pass' 
 
 brew 'fheroes2'
 brew 'openttd'
 
 # casks
-cask 'adguard'
 cask 'balenaetcher'
 cask 'bettertouchtool'
 cask 'bruno'
@@ -90,15 +89,11 @@ cask 'db-browser-for-sqlite'
 cask 'discord'
 cask 'finicky'
 cask 'firefox'
-cask 'firefox-developer-edition'
-cask 'gog-galaxy'
+cask 'firefox@developer-edition'
 cask 'google-chrome'
 cask 'handbrake'
-cask 'ice'
 cask 'iina'
-cask 'iterm2'
 cask 'jordanbaird-ice'
-cask 'karabiner-elements'
 cask 'keka'
 cask 'keycastr'
 cask 'mac-mouse-fix'

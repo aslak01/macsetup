@@ -181,29 +181,32 @@ export N_PREFIX=$HOME/.n
 export PATH=$N_PREFIX/bin:$PATH
 
 subheading "Installing pnpm"
-# pnpm through npm to hopefully avoid an issue where pnpm is tied to node version at install time
-npm i -g pnpm
+
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 
-subheading "Installing rust, bob, nvim"
+subheading "Installing rust"
 # install rust noninteractively
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+export RUSTPATH="$HOME/.cargo"
+
+subheading "Installing bob"
+
 cargo install bob-nvim
 
-bob install stable
+subheading "Installing version managed neovim"
+
+bob install latest
 
 
 subheading "Installing App Store apps"
 
 # MAC APP STORE
-mas install 1458969831 # JSONPeep
-mas install 1437138382 # WhatFont
 mas install 1584519802 # Vimlike
 mas install 937984704 # Amphetamine
 mas install 1142051783 # LG Screen Manager
 mas install 1475387142 # Tailscale
-mas install 1287239339 # Color slurp
 mas install 409203825 # Numbers
 
 # subheading "Configuring git"
@@ -266,7 +269,8 @@ if has_consent; then
   subheading "Cloning dotfiles to ~/dotfiles and stowing them"
   echo "(dotfiles repo: $DOTFILES)"
   git clone $DOTFILESGIT ~/dotfiles
-  rm ~/.zshrc
+  # remove files so symlinking can work:
+  rm ~/.zshrc ~/.zprofile ~/.zshenv
   (cd ~/dotfiles; stow .)
 fi
 
