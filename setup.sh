@@ -182,6 +182,9 @@ export PATH=$N_PREFIX/bin:$PATH
 
 subheading "Installing pnpm"
 
+# source .zshrc to try to avoid pnpm getting tied to macos node version
+. ~/.zshrc
+
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 
