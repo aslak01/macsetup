@@ -72,6 +72,9 @@ brew 'FelixKratz/formulae/borders'
 brew 'koekeishiya/formulae/yabai'
 brew 'koekeishiya/formulae/skhd'
 
+# macos file associations
+brew 'duti'
+
 # mail
 brew 'abook'
 brew 'neomutt'
