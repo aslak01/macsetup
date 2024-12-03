@@ -53,6 +53,7 @@ brew 'starship'
 brew 'tldr'
 brew 'wget'
 brew 'zoxide'
+brew 'gping'
 
 # multimedia
 brew 'ffmpeg'
@@ -76,7 +77,7 @@ brew 'abook'
 brew 'neomutt'
 brew 'notmuch'
 
-brew 'pass' 
+brew 'pass'
 
 brew 'fheroes2'
 brew 'openttd'
