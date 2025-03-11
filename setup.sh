@@ -28,14 +28,6 @@ if ! has_consent; then
     exit 0
 fi
 
-echo "Enable sudo so the script has the necessary permissions"
-sudo -v
-while true; do
-    sudo -n true
-    sleep 60
-    kill -0 "$$" || exit
-done 2>/dev/null &
-
 refresh_header
 
 subheading "Caffeinating so system sleep doesn't abort the script"
@@ -49,6 +41,8 @@ refresh_header
 # printf "%${COLUMNS}s\n" "${the_weather:-I hope the weather is nice}"
 
 # Ask for user variables up front
+#
+source ./scripts/get_details.sh
 
 refresh_header
 
@@ -158,6 +152,14 @@ ssh-keygen -t ed25519 -C "${YOUR_EMAIL}" -f ~/.ssh/id_ed25519 -N ""
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cp -f ./assets/config ~/.ssh/config
+
+echo "Enable sudo so the script has the necessary permissions"
+sudo -v
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2>/dev/null &
 
 subheading "Setting DNS to Cloudflare and Google servers"
 
