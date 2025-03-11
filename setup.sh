@@ -15,7 +15,7 @@ if ! has_consent; then
     exit 0
 fi
 
-osascript "./scripts/grant_terminal_access.scpt"
+osascript -e "./scripts/grant_terminal_access.scpt"
 
 echo "If the Apple script didn't work, grant access manually. To do this, open ${bold}System Settings${normal} and go to ${bold}Privacy and Security${normal}."
 e_anykey "Press any key to continue when this is done"

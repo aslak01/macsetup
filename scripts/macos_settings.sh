@@ -14,7 +14,6 @@ sudo scutil --set HostName "${COMPUTER_NAME}"
 sudo scutil --set LocalHostName "${COMPUTER_NAME}"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${COMPUTER_NAME}"
 
-
 subheading "Enable Filevault"
 
 sudo fdesetup enable
@@ -22,14 +21,8 @@ sudo fdesetup enable
 # Always boot in verbose mode
 # sudo nvram boot-args="-v"
 
-echo "Set lock screen message:"
-echo "If found call ${YOUR_PHONE} or email ${YOUR_EMAIL}"
-
-sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText "If found call ${YOUR_PHONE} or email ${YOUR_EMAIL}"
-
 echo "Use function F1, F2, etc. keys as standard function keys"
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
-
 
 echo "Require password as soon as screensaver or sleep mode starts"
 defaults write com.apple.screensaver askForPassword -int 1
@@ -129,7 +122,7 @@ echo "Show status bar"
 defaults write com.apple.finder ShowStatusBar -bool true
 
 echo "Expand the following File Info panes:"
-echo "“General”, “Open with”, and “Sharing & Permissions”"
+echo "'General', 'Open with', and 'Sharing & Permissions'"
 defaults write com.apple.finder FXInfoPanesExpanded -dict \
   General -bool true \
   OpenWith -bool true \
@@ -193,7 +186,7 @@ defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 # echo "Warn about fraudulent websites"
 # defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
 
-echo "Enable “Do Not Track”"
+echo "Enable 'Do Not Track'"
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 
 echo "Update extensions automatically"
@@ -214,7 +207,7 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 ## iTUNES
 ## =============================================================================
 echo "Stop iTunes from responding to the keyboard media keys"
-launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2> /dev/null
+launchctl unload -w /System/Library/LaunchAgents/com.apple.rcd.plist 2>/dev/null
 
 ## MAIL
 ## =============================================================================
@@ -262,12 +255,13 @@ defaults write -g com.apple.mouse.scaling 1
 defaults write -g com.apple.trackpad.scaling 1
 
 running "Speed up Mission Control animations"
-defaults write com.apple.dock expose-animation-duration -float 0.1;ok
+defaults write com.apple.dock expose-animation-duration -float 0.1
+ok
 
 running "Don’t group windows by application in Mission Control"
 # (i.e. use the old Exposé behavior instead)
-defaults write com.apple.dock expose-group-by-app -bool false;ok
-
+defaults write com.apple.dock expose-group-by-app -bool false
+ok
 
 echo "Enable three finger drag"
 defaults write com.apple.AppleMultitouchTrackpad DragLock -bool false
@@ -281,11 +275,10 @@ defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool t
 # sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setloggingmode on
 # sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
 
-
 subheading "Restarting affected processes"
 
 # Kill all affected apps and services
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-	"Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer"; do
-	killall "$app" >/dev/null 2>&1
+  "Dock" "Finder" "Mail" "Messages" "Safari" "SystemUIServer"; do
+  killall "$app" >/dev/null 2>&1
 done
