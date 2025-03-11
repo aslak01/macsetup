@@ -8,11 +8,22 @@ refresh_header
 
 subheading "Allow your current terminal emulator full disk access"
 
-echo "To do this, open ${bold}System Settings${normal} and go to ${bold}Privacy and Security${normal}."
+get_consent "The script will attempt to run an Apple script automation to achieve this"
+if ! has_consent; then
+    e_failure "Please restart the script"
+    killall caffeinate
+    exit 0
+fi
+
+osascript "./scripts/grant_terminal_access.scpt"
+
+echo "If the Apple script didn't work, grant access manually. To do this, open ${bold}System Settings${normal} and go to ${bold}Privacy and Security${normal}."
+e_anykey "Press any key to continue when this is done"
 
 get_consent "Have you granted disk access to your terminal?"
+
 if ! has_consent; then
-    e_failure "Please grant the access and then rerun the script"
+    e_failure "Please restart the script"
     killall caffeinate
     exit 0
 fi
@@ -38,34 +49,6 @@ refresh_header
 # printf "%${COLUMNS}s\n" "${the_weather:-I hope the weather is nice}"
 
 # Ask for user variables up front
-
-subheading "Set your COMPUTER NAME, LOCK SCREEN, GIT, and SSH information"
-TIP="Tip: Don't include your real name"
-rightalign "$TIP"
-echo "Computer name:"
-read -r COMPUTER_NAME
-echo "Your name:"
-read -r YOUR_NAME
-echo "Your email:"
-read -r YOUR_EMAIL
-echo "Your phone number:"
-read -r YOUR_PHONE
-
-refresh_header
-
-subheading "Verify details"
-
-echo -e "Computer name: ${color_yellow}$COMPUTER_NAME ${color_reset}"
-echo "Name: ${color_yellow}$YOUR_NAME${color_reset}"
-echo "Email: ${color_yellow}$YOUR_EMAIL${color_reset}"
-echo "Phone: ${color_yellow}$YOUR_PHONE${color_reset}"
-
-get_consent "Are your details correct?"
-if ! has_consent; then
-    e_failure "Please rerun script and set the details correctly"
-    killall caffeinate
-    exit 0
-fi
 
 refresh_header
 
@@ -147,10 +130,6 @@ brew cleanup
 subheading "Installing bun"
 curl -fsSL https://bun.sh/install | bash
 
-# Hopefully sourcing n, node & npm so next bit can run
-export N_PREFIX=$HOME/.n
-export PATH=$N_PREFIX/bin:$PATH
-
 subheading "Installing rust"
 # install rust noninteractively
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -164,8 +143,6 @@ cargo install bob-nvim
 subheading "Installing version managed neovim"
 
 bob install latest
-
-subheading "Installing App Store apps"
 
 # subheading "Configuring git"
 #
@@ -182,7 +159,7 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cp -f ./assets/config ~/.ssh/config
 
-subheading "Setting DNS for WiFi"
+subheading "Setting DNS to Cloudflare and Google servers"
 
 sudo networksetup -setdnsservers Wi-Fi 1.1.1.1 8.8.8.8 8.8.4.4
 sudo dscacheutil -flushcache
