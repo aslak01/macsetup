@@ -19,7 +19,11 @@ fi
 
 echo "Enable sudo so the script has the necessary permissions"
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2>/dev/null &
 
 refresh_header
 
@@ -35,7 +39,6 @@ refresh_header
 
 # Ask for user variables up front
 
-
 subheading "Set your COMPUTER NAME, LOCK SCREEN, GIT, and SSH information"
 TIP="Tip: Don't include your real name"
 rightalign "$TIP"
@@ -49,7 +52,6 @@ echo "Your phone number:"
 read -r YOUR_PHONE
 
 refresh_header
-
 
 subheading "Verify details"
 
@@ -69,27 +71,14 @@ refresh_header
 
 e_success "Details set"
 
-
-subheading "APP STORE"
-
-echo "SIGN IN TO THE ${color_blue}MAC APP STORE${color_reset}"
-open /System/Applications/App\ Store.app/
-e_pending "Sign in to the App Store to get xcode tools and other App Store apps with mas"
-e_anykey "Press any key when you're done, to continue."
-
-
 subheading "Setup start"
 
 e_bold "This script will install"
 printf "\n"
 echo "* xcode-select"
 echo "* brew packages as configured in the Brewfile"
-echo "* install zip zsh and deno"
-echo "* install selected apps from the app store"
 echo "* configure global git variables with the information previously provided"
 echo "* generate ssh key"
-echo "* copy someonewhocares' hosts file to /etc/hosts"
-echo "* set computer name"
 echo "* enable filevault"
 echo "* tune various macos system preferences, as defined in scripts/macos_settings.sh"
 echo ""
@@ -107,15 +96,15 @@ fi
 
 subheading "Installing xcode tools"
 
-if ! xcode-select --print-path &> /dev/null; then
+if ! xcode-select --print-path &>/dev/null; then
 
     # Prompt user to install the XCode Command Line Tools
-    xcode-select --install &> /dev/null
+    xcode-select --install &>/dev/null
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Wait until the XCode Command Line Tools are installed
-    until xcode-select --print-path &> /dev/null; do
+    until xcode-select --print-path &>/dev/null; do
         sleep 5
     done
 
@@ -134,13 +123,12 @@ subheading "Installing homebrew"
 # Check for Homebrew, install if we don't have it
 if test ! "$(which brew)"; then
     NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    echo "eval '$(/opt/homebrew/bin/brew shellenv)'" >> ~/.zprofile
+    echo "eval '$(/opt/homebrew/bin/brew shellenv)'" >>~/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Opt out of brew analytics
 brew analytics off
-
 
 subheading "Installing brew packages"
 
@@ -152,41 +140,16 @@ brew bundle --file=./Brewfile
 # start brew services
 brew services start borders
 
-
 subheading "Cleaning up"
 
 brew cleanup
 
-
-subheading "Installing zip zsh"
-# Zip Zsh plugin manager
-zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
-
-
-subheading "Installing deno"
-# Deno (updated too frequently to want to manage it with brew)
-curl -fsSL https://deno.land/x/install/install.sh | sh
-
-
 subheading "Installing bun"
 curl -fsSL https://bun.sh/install | bash
-
-
-subheading "Installing n, node lts, and npm"
-# install n (node version manager) and current node lts
-curl -L https://bit.ly/n-install | bash -s -- -y
 
 # Hopefully sourcing n, node & npm so next bit can run
 export N_PREFIX=$HOME/.n
 export PATH=$N_PREFIX/bin:$PATH
-
-subheading "Installing pnpm"
-
-# source .zshrc to try to avoid pnpm getting tied to macos node version
-. ~/.zshrc
-
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-
 
 subheading "Installing rust"
 # install rust noninteractively
@@ -202,15 +165,7 @@ subheading "Installing version managed neovim"
 
 bob install latest
 
-
 subheading "Installing App Store apps"
-
-# MAC APP STORE
-mas install 1584519802 # Vimlike
-mas install 937984704 # Amphetamine
-mas install 1142051783 # LG Screen Manager
-mas install 1475387142 # Tailscale
-mas install 409203825 # Numbers
 
 # subheading "Configuring git"
 #
@@ -227,27 +182,19 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 cp -f ./assets/config ~/.ssh/config
 
-# subheading "Making hosts file"
-#
-# cp /etc/hosts /etc/hosts.old
-# curl "https://someonewhocares.org/hosts/zero/hosts" | sudo tee -a /etc/hosts
-
-
 subheading "Setting DNS for WiFi"
 
 sudo networksetup -setdnsservers Wi-Fi 1.1.1.1 8.8.8.8 8.8.4.4
-sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
-
+sudo dscacheutil -flushcache
+sudo killall -HUP mDNSResponder
 
 subheading "Allow touchID to sudo"
 sudo cp -f ./assets/sudo /etc/pam.d/sudo
-
 
 subheading "Tuning MacOS settings"
 
 sudo chmod +x scripts/macos_settings.sh
 source scripts/macos_settings.sh
-
 
 # subheading "Checking for MacOS software updates"
 
@@ -259,7 +206,7 @@ refresh_header
 e_success "Most installations are done!"
 
 printf "\n\n"
-echo "Now please add your new ssh public key to github to clone the dotfiles repo"
+echo "Take a moment to add the public key where neccessary"
 echo ""
 cat ~/.ssh/id_ed25519.pub
 echo ""
@@ -269,12 +216,15 @@ e_anykey "Press any key to continue when this is done"
 get_consent "Did you add the new ssh public key to your github?"
 
 if has_consent; then
-  subheading "Cloning dotfiles to ~/dotfiles and stowing them"
-  echo "(dotfiles repo: $DOTFILES)"
-  git clone $DOTFILESGIT ~/dotfiles
-  # remove files so symlinking can work:
-  rm ~/.zshrc ~/.zprofile ~/.zshenv
-  (cd ~/dotfiles; stow .)
+    subheading "Cloning dotfiles to ~/dotfiles and stowing them"
+    echo "(dotfiles repo: $DOTFILES)"
+    git clone $DOTFILESGIT ~/dotfiles
+    # remove files so symlinking can work:
+    rm ~/.zshrc ~/.zprofile ~/.zshenv
+    (
+        cd ~/dotfiles || exit
+        stow .
+    )
 fi
 
 subheading "Done!"
