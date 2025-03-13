@@ -121,9 +121,6 @@ subheading "Cleaning up"
 
 brew cleanup
 
-subheading "Installing bun"
-curl -fsSL https://bun.sh/install | bash
-
 subheading "Installing rust"
 # install rust noninteractively
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -138,6 +135,7 @@ cargo install bob-nvim
 subheading "Installing version managed neovim"
 
 bob install latest
+bob use latest
 
 # subheading "Configuring git"
 #
