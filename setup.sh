@@ -129,6 +129,7 @@ subheading "Installing rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 export RUSTPATH="$HOME/.cargo"
+sudo chown -R "$(whoami)" "$HOME/.cargo"
 
 subheading "Installing bob"
 
