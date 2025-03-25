@@ -1,5 +1,4 @@
 # brewfile
-tap 'homebrew/bundle'
 tap 'shaunsingh/SFMono-Nerd-Font-Ligaturized'
 
 # password requireres
