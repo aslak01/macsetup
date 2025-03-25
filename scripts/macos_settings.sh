@@ -9,11 +9,6 @@ osascript -e 'tell application "System Settings" to quit'
 
 subheading "Setting computer name"
 
-sudo scutil --set ComputerName "${COMPUTER_NAME}"
-sudo scutil --set HostName "${COMPUTER_NAME}"
-sudo scutil --set LocalHostName "${COMPUTER_NAME}"
-sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "${COMPUTER_NAME}"
-
 subheading "Enable Filevault"
 
 sudo fdesetup enable
