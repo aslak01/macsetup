@@ -8,6 +8,7 @@ cask 'nikitabobko/tap/aerospace'
 
 # GNU
 brew 'coreutils'
+brew 'moreutils'
 brew 'gnu-indent'
 brew 'gnu-sed'
 brew 'gnu-tar'
