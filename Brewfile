@@ -1,5 +1,4 @@
 # brewfile
-tap 'shaunsingh/SFMono-Nerd-Font-Ligaturized'
 
 # password requireres
 cask 'karabiner-elements'
@@ -54,7 +53,7 @@ brew 'qemu'
 brew 'rsync'
 brew 'sqlite'
 brew 'starship'
-brew 'tldr'
+brew 'tlrc'
 brew 'tree-sitter'
 brew 'vivid'
 brew 'wget'
