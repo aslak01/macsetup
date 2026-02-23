@@ -95,6 +95,9 @@ defaults write com.apple.finder AppleShowAllFiles -bool true
 sudo chflags nohidden ~/Library
 sudo chflags nohidden /Volumes
 
+echo "Hide desktop icons"
+defaults write com.apple.finder CreateDesktop -bool false
+
 echo "Allow quitting via ⌘ + Q (doing so will also hide desktop icons)"
 defaults write com.apple.finder QuitMenuItem -bool true
 
